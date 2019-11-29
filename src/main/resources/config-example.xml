@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Sample configuration file for reading reconciliation information from Svea's webservices.
+	
+	The given configuration example reconciles all payments to account 1581. This means that
+	all matched payments will be accounted on 1581.
+	The batch-sum from each payment type will be accounted from 1581 to account 1973 in this configuration.
+	On account 1973 you'll find the payments that are expected to land on you bank account.
+	On 1581 you'll find all matched payments.
+	If 1581 ends up to non-zero at the end of the day, a payment or fee hasn't been matched.
+	1973 is normally not non-zero and is the sum of payments sent from Svea but not accounted
+	on the actual bank account.
+	 
+ -->
+
+<configuration>
+
+	<!-- List the accounts from where you want to read reconciliation info -->
+	<accounts>
+	
+		<!-- Example of invoice account -->
+		<account>
+			<accountNo>77NNN</accountNo>
+			<username>TESTCLIENT.ORG</username>
+			<password>password</password>
+			<accountType>invoice</accountType>
+			<currency>SEK</currency>
+			<company>false</company>
+			
+			<!-- Account mappings are used to map Sveas account information to
+				 the actual accounts in the recievers accounting -->
+			<accountMappings>
+
+				<!-- The account map specifies what the different accounts map to
+					 All of these must be unique and be filled in.
+					 If the accounts aren't unique in the actual accounting, the
+					 accountRemap directive is used to remap the account/fee.
+				 -->			
+				<accountMap>
+					<cash>1930</cash>
+					<reconcile>1581</reconcile>
+					<deposit>1974</deposit>
+					<receivables>1510</receivables>
+					<debt>2419</debt>
+					<vat>2641</vat>
+					<adm>6532</adm>
+					<credit>6590</credit>
+					<reminder>6533</reminder>
+					<collection>6534</collection>
+					<interest>6535</interest>
+					<postage>6250</postage>
+				</accountMap>
+
+				<!-- Remaps the above to the client's actual accounting -->
+				<accountRemap from="1930" to="1973"/>
+				<accountRemap from="6590" to="6064"/>
+				<accountRemap from="6532" to="6064"/>
+				<accountRemap from="6533" to="6064"/>
+				<accountRemap from="6534" to="6064"/>				
+				<accountRemap from="6535" to="6064"/>
+				
+			</accountMappings>
+			
+		</account>
+		
+		<!-- Example of payment plan account -->
+		<account>
+			<accountNo>55NNN</accountNo>
+			<username>TESTCLIENT.ORG</username>
+			<password>password</password>
+			<accountType>paymentplan</accountType>
+			<currency>SEK</currency>
+			<company>false</company>
+			
+			<accountMappings>
+
+				<!-- All must be unique -->			
+				<accountMap>
+					<cash>1930</cash>
+					<reconcile>1581</reconcile>
+					<deposit>1974</deposit>
+					<receivables>1510</receivables>
+					<debt>2419</debt>
+					<vat>2641</vat>
+					<adm>6532</adm>
+					<credit>6590</credit>
+					<reminder>6533</reminder>
+					<collection>6534</collection>
+					<interest>6535</interest>
+					<postage>6250</postage>
+				</accountMap>
+
+				<!-- Remaps the above to the client's actual accounting -->
+				<accountRemap from="1930" to="1973"/>
+				<accountRemap from="6590" to="6064"/>
+				<accountRemap from="6532" to="6064"/>
+				<accountRemap from="6533" to="6064"/>
+				<accountRemap from="6534" to="6064"/>				
+				<accountRemap from="6535" to="6064"/>
+				
+			</accountMappings>
+			
+		</account>
+
+		<!-- Example of credit account -->
+		<account>
+			<accountNo>66NNN</accountNo>
+			<username>TESTCLIENT.ORG</username>
+			<password>password</password>
+			<accountType>credit</accountType>
+			<currency>SEK</currency>
+			<company>false</company>
+			
+			<accountMappings>
+
+				<!-- All must be unique -->			
+				<accountMap>
+					<cash>1930</cash>
+					<reconcile>1581</reconcile>
+					<deposit>1974</deposit>
+					<receivables>1510</receivables>
+					<debt>2419</debt>
+					<vat>2641</vat>
+					<adm>6532</adm>
+					<credit>6590</credit>
+					<reminder>6533</reminder>
+					<collection>6534</collection>
+					<interest>6535</interest>
+					<postage>6250</postage>
+				</accountMap>
+
+				<!-- Remaps the above to the client's actual accounting -->
+				<accountRemap from="1930" to="1973"/>
+				<accountRemap from="6590" to="6064"/>
+				<accountRemap from="6532" to="6064"/>
+				<accountRemap from="6533" to="6064"/>
+				<accountRemap from="6534" to="6064"/>				
+				<accountRemap from="6535" to="6064"/>
+
+			</accountMappings>
+			
+		</account>
+
+		<!-- Example of a credit card account -->		
+		<account>
+			<accountNo>77NNN</accountNo>
+			<username>TESTCLIENT.ORG</username>
+			<password>password</password>
+			<accountType>creditcard</accountType>
+			<currency>SEK</currency>
+			<!-- Ignore fees since they are included on the main invoice account -->
+			<ignoreFees>true</ignoreFees>
+			
+			<accountMappings>
+
+				<!-- All must be unique -->			
+				<accountMap>
+					<cash>1930</cash>
+					<reconcile>1581</reconcile>
+					<deposit>1974</deposit>
+					<receivables>1510</receivables>
+					<debt>2419</debt>
+					<vat>2641</vat>
+					<adm>6532</adm>
+					<credit>6590</credit>
+					<reminder>6533</reminder>
+					<collection>6534</collection>
+					<interest>6535</interest>
+					<postage>6250</postage>
+				</accountMap>
+
+				<!-- Remaps the above to the client's actual accounting -->
+				<accountRemap from="1930" to="1973"/>
+				<accountRemap from="6590" to="6040"/>
+				<accountRemap from="6532" to="6040"/>
+				<accountRemap from="6533" to="6040"/>
+				<accountRemap from="6534" to="6040"/>				
+				<accountRemap from="6535" to="6040"/>
+				
+			</accountMappings>
+			
+		</account>
+		
+	</accounts>
+
+</configuration>

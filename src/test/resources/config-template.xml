@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<!-- Accounts for a specific client -->
+	
+	<!-- To use this test, copy this file to config-test.xml and
+		 fill in configuration details.
+	 -->
+	
+	<!--
+	
+			Possible account types 
+			- invoice
+			- paymentplan
+			- creditcard
+			 
+	 -->
+	<accounts>
+	
+		<account>
+			<accountNo></accountNo>
+			<username></username>
+			<password></password>
+			<accountType>invoice</accountType>
+		</account>
+		
+		<account>
+			<accountNo></accountNo>
+			<username></username>
+			<password></password>
+			<accountType>paymentplan</accountType>
+		</account>
+		
+		<!-- Credit card account, reconciliation from Payment Gateway -->
+		
+		<account>
+			<merchantId>NNNN</merchantId>
+			<accountType>creditcard</accountType>
+			<secretWord>xxxxxx0000xxxx</secretWord>
+			<server>https://webpay.sveaekonomi.se</server>
+		</account>
+		
+	</accounts>
+
+</configuration>
