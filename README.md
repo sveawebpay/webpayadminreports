@@ -10,8 +10,8 @@ Prerequisites:
 * (Ant)
 
 ```
-git clone https://tfs.ia.corp.svea.com/Projects/Svea.WebPay.PaymentAdmin/_git/ReportFactorySveaWebpayInternal
-cd ReportFactorySveaWebpayInternal/webpayadmin-reports/
+git clone https://github.com/sveawebpay/webpayadminreports
+cd webpayadminreports
 mvn -U clean compile assembly:single
 java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -u USERNAME -p PASSWORD
 ```
