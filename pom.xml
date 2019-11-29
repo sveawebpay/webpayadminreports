@@ -158,11 +158,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.svea</groupId>
-			<artifactId>webpayadmin-reports</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.svea</groupId>
 			<artifactId>webpay-report-converters</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -174,13 +169,13 @@
 		<url>https://www.svea.com</url>
 	</organization>
 	<scm>
-		<url>https://github.com/sveawebpay/webpayadmin-reports</url>
-		<connection>scm:git:git://github.com/sveawebpay/webpayadmin-reports.git</connection>
+		<url>https://github.com/sveawebpay/webpayadminreports</url>
+		<connection>scm:git:git://github.com/sveawebpay/webpayadminreports.git</connection>
 	</scm>
 	<url>https://github.com/sveawebpay/webpayadmin-reports</url>
 	<issueManagement>
 		<system>Github Issues</system>
-		<url>https://github.com/sveawebpay/webpayadmin-reports/issues</url>
+		<url>https://github.com/sveawebpay/webpayadminreports/issues</url>
 	</issueManagement>
 	
   	<licenses>
