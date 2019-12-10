@@ -9,6 +9,27 @@ Prerequisites:
 * Git
 * (Ant)
 
+### Download and install dependencies
+
+The below dependencies are planned to be in maven central. Before they are deployed there you need to install them manually in your local maven repository. Simple instructions for that below.
+
+```
+git clone https://github.com/sveawebpay/webpay-common
+cd webpay-common
+mvn install
+cd ..
+git clone https://github.com/sveawebpay/webpay-report-converters
+cd webpay-report-converters
+mvn install
+cd ..
+git clone https://github.com/sveawebpay/webpayadminservice-client
+cd webpayadminservice-client
+mvn install
+cd ..
+```
+
+### Install
+
 ```
 git clone https://github.com/sveawebpay/webpayadminreports
 cd webpayadminreports
@@ -16,7 +37,6 @@ mvn -U clean compile assembly:single
 java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -u USERNAME -p PASSWORD
 ```
 
-Note, if above doesn't compile, first configure the ant-build.properties (from the example file) and run [ant](http://ant.apache.org/).
 
 If you end up with "Invalid target release", when compiling, see http://roufid.com/invalid-target-release-in-maven-build/
 

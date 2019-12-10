@@ -6,13 +6,19 @@
 	
 	<!-- To use this test, copy this file to config-test.xml and
 		 fill in configuration details.
+		 
+		 Test details are found here
+		 https://www.svea.com/se/sv/foretag/betallosningar/betallosningar-for-e-handel/tech-site/?currentTab=custom-integration&subTab=test-instructions
+		 
 	 -->
+	 
 	
 	<!--
 	
 			Possible account types 
 			- invoice
 			- paymentplan
+			- account-credit
 			- creditcard
 			 
 	 -->
@@ -23,6 +29,7 @@
 			<username></username>
 			<password></password>
 			<accountType>invoice</accountType>
+			<countryCode>SE</countryCode>
 		</account>
 		
 		<account>
@@ -30,6 +37,15 @@
 			<username></username>
 			<password></password>
 			<accountType>paymentplan</accountType>
+			<countryCode>SE</countryCode>
+		</account>
+		
+		<account>
+			<accountNo></accountNo>
+			<username></username>
+			<password></password>
+			<accountType>account-credit</accountType>
+			<countryCode>SE</countryCode>
 		</account>
 		
 		<!-- Credit card account, reconciliation from Payment Gateway -->

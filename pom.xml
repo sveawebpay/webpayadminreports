@@ -18,6 +18,17 @@
 	</distributionManagement>
 
 	<build>
+
+		<!-- Exclude any credential files -->	
+		<resources>
+			<resource>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>config-test*</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	
 		<plugins>
 		
 			<plugin>
@@ -109,7 +120,7 @@
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
-						<phase>verify</phase>
+						<phase>deploy</phase>
 						<goals>
 							<goal>sign</goal>
 						</goals>
