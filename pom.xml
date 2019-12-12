@@ -27,6 +27,13 @@
 					<exclude>config-test*</exclude>
 				</excludes>
 			</resource>
+			<resource>
+				<directory>**</directory>
+				<excludes>
+					<exclude>*.json</exclude>
+					<exclude>*.xls*</exclude>
+				</excludes>
+			</resource>
 		</resources>
 	
 		<plugins>
