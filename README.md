@@ -4,10 +4,10 @@ Java client / API used to collect reconciliation information from Svea Ekonomi's
 To install and run
 ==================
 Prerequisites:
-* Java 1.8
-* Maven
-* Git
-* (Ant)
+* [Java >= 1.8](https://en.wikipedia.org/wiki/List_of_Java_virtual_machines)
+* [Git](https://git-scm.com/)
+* [Maven](http://maven.apache.org/)
+
 
 ### Download and install dependencies
 
@@ -28,15 +28,21 @@ mvn install
 cd ..
 ```
 
-### Install
+### Compile and install
 
 ```
 git clone https://github.com/sveawebpay/webpayadminreports
 cd webpayadminreports
 mvn -U clean compile assembly:single
-java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -u USERNAME -p PASSWORD
 ```
 
+The above will create a single jar which contains all necessary code to run this API.
+
+You'll find the jar in the target directory, it will be name something like below
+
+```
+webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+```
 
 If you end up with "Invalid target release", when compiling, see http://roufid.com/invalid-target-release-in-maven-build/
 
@@ -92,14 +98,14 @@ usage: WebpayAdminClientMain
                              The option -savejsonconfigfile can be used to 
                              generate a starting configuration file.
 
- -enrich					 Enrich data with as much information as possible.
+ -enrich                     Enrich data with as much information as possible.
  
- -noprune					 Return report type groups even if they are empty.
+ -noprune                    Return report type groups even if they are empty.
  							 Good to use to check what accounts are actually 
  							 checked.
                              
  -savejsonconfigfile <arg>   Save credentials as json file. Handy for generating 
- 							 configuration files and listing the accounts available for 
+ 							 configuration files and listing the accounts available for
                              reporting and other actions
  
 
