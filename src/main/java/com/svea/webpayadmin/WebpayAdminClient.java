@@ -1,9 +1,12 @@
 package com.svea.webpayadmin;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.slf4j.Logger;
 
 import com.svea.webpay.common.auth.ListOfSveaCredentials;
 import com.svea.webpay.common.auth.SveaCredential;
@@ -39,9 +42,6 @@ import com.svea.webpayadminservice.client.SearchPaymentPlansResponse2;
 import com.svea.webpayadminservice.client.SortDirection;
 import com.svea.webpayadminservice.client.SortPaymentPlanProperty;
 import com.svea.webpayadminservice.client.TextMatchType;
-import com.svea.webpayadminservice.client.TextMatchType2;
-import com.svea.webpayadminservice.client.TextMatchType3;
-import com.svea.webpayadminservice.client.TextMatchType4;
 
 /**
  * Class for easier access to the client functions.
@@ -51,6 +51,26 @@ import com.svea.webpayadminservice.client.TextMatchType4;
  */
 public class WebpayAdminClient extends WebpayAdminBase {
 
+	public static Logger log = org.slf4j.LoggerFactory.getLogger(WebpayAdminClient.class);		
+	
+	// Set logging properties to avoid verbose logging / warnings from webpayadminservice-client
+	static {
+		
+		try {
+
+			// Find logging.properties
+			URL url = WebpayAdminClient.class.getClassLoader().getResource("logging.properties");
+			if (url!=null) {
+				System.setProperty("java.util.logging.config.file", url.getFile());
+			}
+			
+		} catch (Exception e) {
+			
+		}
+		
+	}
+	
+	
 	/**
 	 * Gets clients by identity account. This means that the user name and password
 	 * that the client uses should be the supplied authentication. With the supplied

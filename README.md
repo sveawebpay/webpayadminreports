@@ -82,35 +82,55 @@ usage: WebpayAdminClientMain
  -debug <arg>                Enable debug
 
  
- -c,--configfile <arg>       Configuration file where credentials are
+ -c,--configfile <arg>       XML-configuration file where credentials are
                              stored. Use a config file when detailed
                              configuration is needed.
 
- -enrich							Enrich data with as much information as possible.
+ -j --jsonconfigfile <arg>   Json-configuration file where credentials and
+                             other options are stored. Use a config file when
+                             detailed configuration is needed.
+                             The option -savejsonconfigfile can be used to 
+                             generate a starting configuration file.
+
+ -enrich					 Enrich data with as much information as possible.
  
- -noprune							Return report type groups even if they are empty.
- 									Good to use to check what accounts are actually 
- 									checked.
+ -noprune					 Return report type groups even if they are empty.
+ 							 Good to use to check what accounts are actually 
+ 							 checked.
                              
  -savejsonconfigfile <arg>   Save credentials as json file. Handy for generating 
- 							 configuration files.
+ 							 configuration files and listing the accounts available for 
+                             reporting and other actions
  
 
 ```
 
-The config file contains your credentials that you get as a client of Svea.
+# Getting started with fetching information
 
-A template config file is supplied in this code to show how the config file must look like.
+The easiest way to create a configuration to fetch information is by first creating a config file from your credentials. 
 
-Example of configuration file is found in <pre>src/main/resources/config-example.xml</pre>
+The credentials are a username and password used for system integration. It's NOT the same as your login to https://paymentadmin.svea.com/
 
-Example with configuration file
+The username is normally your sitename as assigned by WebPay when you received your account. If you don't have these login details, contact your contact person at Svea Webpay for the credentials. 
+
+When you have the credentials run the following
 
 ```
-java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -c config.xml 
+java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -u USERNAME -p PASSWORD -savejsonconfigfile myconfig.json
 ```
 
-Example Excel Format
+This will create a configuration file with your account details in the file myconfig.json.
+
+To fetch reporting information, the next step can be as example
+
+```
+java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -j myconfig.json -d 2019-12-10 -format xlsx
+```
+
+The above example will create an Excel-report with your transactions dating to 2019-12-10.
+
+Another example Excel Format which specifies where the file should be saved.
+
 ```
 java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -u sverigetest -p sverigetest -format xlsx -outfile myfile.xlsx -outdir /tmp
 ```

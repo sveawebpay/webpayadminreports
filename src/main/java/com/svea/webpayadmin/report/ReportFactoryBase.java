@@ -202,6 +202,10 @@ public class ReportFactoryBase {
 		
 		boolean payoutFound = false;
 		
+		if (result==null) {
+			return;
+		}
+		
 		for (FinancialReportRow r : result) {
 			
 			if (r.getRowId()==152 || // SEK paid out (invoice / partpayment)
