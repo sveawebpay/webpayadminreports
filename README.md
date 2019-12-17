@@ -83,7 +83,11 @@ usage: WebpayAdminClientMain
                              
  -outfile <arg>              Output to file instead of stdout
  
- -recipientorgnr <arg>       Sets recipient org nr to this in output
+ -recipientorgnr <arg>       Sets recipient org nr to <arg> in output. Used to
+ 						     construct the file name in some cases.
+ 
+ -recipientname <arg>		 Sets recipient name to <arg> in output. Used to
+ 						     construct the file name in some cases.
 
  -debug <arg>                Enable debug
 

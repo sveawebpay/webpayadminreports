@@ -210,6 +210,9 @@ public class WebpayAdminClientMain {
 			if (orgNo!=null && cre.getOrgNo()==null) {
 				cre.setOrgNo(orgNo);
 			}
+			if (orgName!=null && cre.getOrgName()!=null) {
+				cre.setOrgName(orgName);
+			}
 			
 			client = null;
 			if (cre.getAccountNo()!=null && cre.getAccountNo().trim().length()>0) {
@@ -406,6 +409,7 @@ public class WebpayAdminClientMain {
 		options.addOption("d","fromdate", true, "From date in format yyyy-MM-dd. If omitted, yesterday's date is used");
 		options.addOption("untildate", true, "Until date in format yyyy-MM-dd");
 		options.addOption("recipientorgnr", true, "Sets recipient org nr to this in output");
+		options.addOption("recipientname", true, "Sets recipient name to this in output");
 		options.addOption("c", "configfile", true, "Xml-configuration file where credentials are stored. Use a config file when detailed configuration is needed.");
 		options.addOption("j", "jsonconfigfile", true, "Json-configuration file where credentials and settings are store. Use a config file when details configuration is needed.");
 		options.addOption("noprune", false, "Return report type groups even if they are empty. Good to use to check what accounts are actually checked.");
@@ -533,6 +537,10 @@ public class WebpayAdminClientMain {
 
 			if (cmd.hasOption("recipientorgnr")) {
 				main.orgNo = cmd.getOptionValue("recipientorgnr");
+			}
+			
+			if (cmd.hasOption("recipientname")) {
+				main.orgName = cmd.getOptionValue("recipientname");
 			}
 			
 			if (cmd.hasOption("savejsonconfigfile")) {
