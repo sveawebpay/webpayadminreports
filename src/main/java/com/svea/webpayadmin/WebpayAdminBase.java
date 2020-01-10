@@ -65,6 +65,15 @@ public class WebpayAdminBase {
 		
 	}
 	
+	/**
+	 * Return credentials set
+	 * 
+	 * @return		Credentials
+	 */
+	public SveaCredential getCredentials() {
+		return cre;
+	}
+	
 	public AdminService getAdminService() {
 		return adminService;
 	}
