@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.svea</groupId>
   <artifactId>webpayadmin-reports</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>WebPayAdmin Reports</name>
   <description>Application / library that compiles reconciliation reports for WebPay.</description>
   
@@ -37,22 +37,6 @@
 		</resources>
 	
 		<plugins>
-		
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<phase>process-resources</phase>
-						<configuration>
-							<tasks>
-								<ant antfile="build.xml" target="webpayadminservice-client"/>
-							</tasks>
-						</configuration>	
-					</execution>
-				</executions>
-			</plugin>
 		
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -143,7 +127,7 @@
 		<dependency>
 			<groupId>com.svea</groupId>
 			<artifactId>webpayadminservice-client</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 		
 		<dependency>
@@ -182,7 +166,7 @@
 		<dependency>
 			<groupId>com.svea</groupId>
 			<artifactId>webpay-report-converters</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 	</dependencies>
   
