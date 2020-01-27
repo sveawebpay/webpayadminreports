@@ -126,7 +126,7 @@ The username is normally your sitename as assigned by WebPay when you received y
 When you have the credentials run the following
 
 ```
-java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -u USERNAME -p PASSWORD -savejsonconfigfile myconfig.json
+java -jar target/webpayadmin-reports-0.0.1-jar-with-dependencies.jar -u USERNAME -p PASSWORD -savejsonconfigfile myconfig.json
 ```
 
 This will create a configuration file with your account details in the file myconfig.json.
@@ -134,7 +134,7 @@ This will create a configuration file with your account details in the file myco
 To fetch reporting information, the next step can be as example
 
 ```
-java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -j myconfig.json -d 2019-12-10 -format xlsx
+java -jar target/webpayadmin-reports-0.0.1-jar-with-dependencies.jar -j myconfig.json -d 2019-12-10 -format xlsx
 ```
 
 The above example will create an Excel-report with your transactions dating to 2019-12-10.
@@ -142,5 +142,5 @@ The above example will create an Excel-report with your transactions dating to 2
 Another example Excel Format which specifies where the file should be saved.
 
 ```
-java -jar target/webpayadmin-reports-0.0.1-SNAPSHOT-jar-with-dependencies.jar -u sverigetest -p sverigetest -format xlsx -outfile myfile.xlsx -outdir /tmp
+java -jar target/webpayadmin-reports-0.0.1-jar-with-dependencies.jar -u sverigetest -p sverigetest -format xlsx -outfile myfile.xlsx -outdir /tmp
 ```
