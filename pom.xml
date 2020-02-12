@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.svea</groupId>
   <artifactId>webpayadmin-reports</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <name>WebPayAdmin Reports</name>
   <description>Application / library that compiles reconciliation reports for WebPay.</description>
   
@@ -166,7 +166,7 @@
 		<dependency>
 			<groupId>com.svea</groupId>
 			<artifactId>webpay-report-converters</artifactId>
-			<version>0.0.1</version>
+			<version>0.0.2</version>
 		</dependency>
 	</dependencies>
   
