@@ -26,13 +26,16 @@ git clone https://github.com/sveawebpay/webpayadminservice-client
 cd webpayadminservice-client
 mvn install
 cd ..
+git clone https://github.com/sveawebpay/webpayadminreports
+cd webpayadminreports
+# Skip tests unless you have configured a credentials file
+mvn install -DskipTests
 ```
 
 ### Compile and install
 
+In the directory webpayadminreports
 ```
-git clone https://github.com/sveawebpay/webpayadminreports
-cd webpayadminreports
 mvn -U clean compile assembly:single
 ```
 
@@ -41,7 +44,7 @@ The above will create a single jar which contains all necessary code to run this
 You'll find the jar in the target directory, it will be name something like below
 
 ```
-webpayadmin-reports-0.0.1-jar-with-dependencies.jar
+webpayadmin-reports-0.0.2-jar-with-dependencies.jar
 ```
 
 If you end up with "Invalid target release", when compiling, see http://roufid.com/invalid-target-release-in-maven-build/
