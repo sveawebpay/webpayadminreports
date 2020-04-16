@@ -2,12 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.svea</groupId>
   <artifactId>webpayadmin-reports</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3-SNAPSHOT</version>
   <name>WebPayAdmin Reports</name>
   <description>Application / library that compiles reconciliation reports for WebPay.</description>
   
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<webpay-common.version>0.0.3-SNAPSHOT</webpay-common.version>
 	</properties>
 	
   	<distributionManagement>
@@ -127,7 +128,13 @@
 		<dependency>
 			<groupId>com.svea</groupId>
 			<artifactId>webpayadminservice-client</artifactId>
-			<version>0.0.1</version>
+			<version>${webpay-common.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.svea</groupId>
+			<artifactId>webpay-report-converters</artifactId>
+			<version>${webpay-common.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -162,11 +169,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.25</version>
-		</dependency>
-		<dependency>
-			<groupId>com.svea</groupId>
-			<artifactId>webpay-report-converters</artifactId>
-			<version>0.0.2</version>
 		</dependency>
 	</dependencies>
   
