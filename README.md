@@ -11,41 +11,40 @@ Prerequisites:
 
 ### Download and install dependencies
 
-The below dependencies are planned to be in maven central. Before they are deployed there you need to install them manually in your local maven repository. Simple instructions for that below.
+The below dependency is planned to be in maven central. Before they are deployed there you need to install it manually in your local maven repository. Simple instructions for that below.
 
 ```
 git clone https://github.com/sveawebpay/webpay-common
 cd webpay-common
 mvn install
-cd ..
-git clone https://github.com/sveawebpay/webpay-report-converters
-cd webpay-report-converters
-mvn install
-cd ..
-git clone https://github.com/sveawebpay/webpayadminservice-client
-cd webpayadminservice-client
-mvn install
-cd ..
+```
+
+### Download and install
+
+```
 git clone https://github.com/sveawebpay/webpayadminreports
 cd webpayadminreports
 # Skip tests unless you have configured a credentials file
 mvn install -DskipTests
 ```
 
-### Compile and install
+### Create a runnable jar
 
-In the directory webpayadminreports
-```
-mvn -U clean compile assembly:single
-```
+In the directory webpayadminreports after above has been run.
+
+	mvn assembly:single
 
 The above will create a single jar which contains all necessary code to run this API.
 
-You'll find the jar in the target directory, it will be name something like below
+You'll find the jar in the target directory, it will be named something like below
 
 ```
-webpayadmin-reports-0.0.2-jar-with-dependencies.jar
+webpayadmin-reports-0.0.3-SNAPSHOT-jar-with-dependencies.jar
 ```
+
+Run with
+
+	java -jar target/webpayadmin-reports-0.0.3-SNAPSHOT-jar-with-dependencies.jar
 
 If you end up with "Invalid target release", when compiling, see http://roufid.com/invalid-target-release-in-maven-build/
 
@@ -129,7 +128,7 @@ The username is normally your sitename as assigned by WebPay when you received y
 When you have the credentials run the following
 
 ```
-java -jar target/webpayadmin-reports-0.0.1-jar-with-dependencies.jar -u USERNAME -p PASSWORD -savejsonconfigfile myconfig.json
+java -jar target/webpayadmin-reports-0.0.X-jar-with-dependencies.jar -u USERNAME -p PASSWORD -savejsonconfigfile myconfig.json
 ```
 
 This will create a configuration file with your account details in the file myconfig.json.
@@ -137,7 +136,7 @@ This will create a configuration file with your account details in the file myco
 To fetch reporting information, the next step can be as example
 
 ```
-java -jar target/webpayadmin-reports-0.0.1-jar-with-dependencies.jar -j myconfig.json -d 2019-12-10 -format xlsx
+java -jar target/webpayadmin-reports-0.0.X-jar-with-dependencies.jar -j myconfig.json -d 2019-12-10 -format xlsx
 ```
 
 The above example will create an Excel-report with your transactions dating to 2019-12-10.
@@ -145,5 +144,5 @@ The above example will create an Excel-report with your transactions dating to 2
 Another example Excel Format which specifies where the file should be saved.
 
 ```
-java -jar target/webpayadmin-reports-0.0.1-jar-with-dependencies.jar -u sverigetest -p sverigetest -format xlsx -outfile myfile.xlsx -outdir /tmp
+java -jar target/webpayadmin-reports-0.0.X-jar-with-dependencies.jar -u sverigetest -p sverigetest -format xlsx -outfile myfile.xlsx -outdir /tmp
 ```
