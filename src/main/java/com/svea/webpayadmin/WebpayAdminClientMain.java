@@ -64,7 +64,7 @@ public class WebpayAdminClientMain {
 	 * 							it's treated as a resource and the classpath is searched.
 	 * @throws Exception
 	 */
-	private void loadConfig(String configfile) throws Exception {
+	private void loadConfig(String configfile, boolean enrichAll) throws Exception {
 
 		if (configfile.toLowerCase().endsWith(".json")) {
 			credentials = SveaCredential.loadCredentialsFromJsonFile(configfile);
@@ -72,7 +72,7 @@ public class WebpayAdminClientMain {
 			credentials = SveaCredential.loadCredentialsFromXmlFile(configfile);
 		}
 		
-		initClients();
+		initClients(enrichAll);
 		
 	}
 	
@@ -82,13 +82,13 @@ public class WebpayAdminClientMain {
 	 * @param configFile
 	 * @throws Exception
 	 */
-	private void loadJsonConfig(String configFile) throws Exception {
+	private void loadJsonConfig(String configFile, boolean enrichAll) throws Exception {
 		
 		ListOfSveaCredentials creds = JsonUtil.gson.fromJson(new FileReader(configFile), ListOfSveaCredentials.class);
 		
 		if (creds!=null && creds.getCredentials()!=null && !creds.getCredentials().isEmpty()) {
 			credentials = creds.getCredentials();
-			initClients();
+			initClients(enrichAll);
 		} else {
 			System.out.println("No credentials found i file: " + configFile);
 			System.exit(1);
@@ -111,14 +111,13 @@ public class WebpayAdminClientMain {
 		credentials = creds.getCredentials();
 		if (enrich) {
 			for (SveaCredential sc : credentials) {
-				sc.setEnrichFromInvoice(true);
 				sc.setIncludeKickbacks(kickback);
 				sc.setSkipEmail(false);
 				sc.setSkipTaxId(false);
 			}
 		}
 		
-		initClients();		
+		initClients(enrich);		
 	}
 	
 	/**
@@ -156,7 +155,6 @@ public class WebpayAdminClientMain {
 			// Include card payments by default
 			cred.setIncludeCardPayments(true);
 		}
-		cred.setEnrichFromInvoice(enrich);
 		cred.setIncludeKickbacks(kickback);
 		cred.setSkipEmail(false);
 		cred.setSkipTaxId(false);
@@ -166,7 +164,7 @@ public class WebpayAdminClientMain {
 		
 		credentials.add(cred);
 		
-		initClients();
+		initClients(enrich);
 		
 	}
 	
@@ -200,7 +198,7 @@ public class WebpayAdminClientMain {
 	 * The credentials determine what kinds of report clients are created.
 	 * 
 	 */
-	public void initClients() {
+	public void initClients(boolean enrichAll) {
 
 		clients = new ArrayList<PaymentReportFactory>();
 		PaymentReportFactory client = null;
@@ -212,6 +210,10 @@ public class WebpayAdminClientMain {
 			}
 			if (orgName!=null && cre.getOrgName()!=null) {
 				cre.setOrgName(orgName);
+			}
+			
+			if (enrichAll) {
+				cre.setEnrichFromInvoice(true);
 			}
 			
 			client = null;
@@ -432,13 +434,17 @@ public class WebpayAdminClientMain {
 		try {
 
 			CommandLine cmd = parser.parse(options, args);
+
+			if (cmd.hasOption("enrich")) {
+				enrich = true;
+			}
 			
 			if (cmd.hasOption("c")) {
-				main.loadConfig(cmd.getOptionValue("c"));
+				main.loadConfig(cmd.getOptionValue("c"), enrich);
 			}
 			
 			if (cmd.hasOption("j")) {
-				main.loadJsonConfig(cmd.getOptionValue("j"));
+				main.loadJsonConfig(cmd.getOptionValue("j"), enrich);
 			}
 		
 			if (cmd.hasOption("u")) {
@@ -449,9 +455,6 @@ public class WebpayAdminClientMain {
 				kickback = true;
 			}
 			
-			if (cmd.hasOption("enrich")) {
-				enrich = true;
-			}
 			
 			if (cmd.hasOption("noprune")) {
 				noprune = true;

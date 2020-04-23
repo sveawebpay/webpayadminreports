@@ -13,6 +13,9 @@ import com.svea.webpay.common.auth.SveaCredential;
 import com.svea.webpay.common.reconciliation.FeeDetail;
 import com.svea.webpay.common.reconciliation.PaymentReportDetail;
 import com.svea.webpay.common.reconciliation.PaymentReportGroup;
+import com.svea.webpay.paymentgw.PaymentGwClient;
+import com.svea.webpay.paymentgw.entity.Customer;
+import com.svea.webpay.paymentgw.entity.Transaction;
 import com.svea.webpayadminservice.client.ArrayOfClientData;
 import com.svea.webpayadminservice.client.ArrayOfDeliverOrderInformation;
 import com.svea.webpayadminservice.client.ArrayOfGetInvoiceInformation;
@@ -256,7 +259,6 @@ public class WebpayAdminClient extends WebpayAdminBase {
 		
 	}
 	
-	
 	/**
 	 * Method that enriches a payment detail list with information from WSDL-method GetInvoices
 	 * 
@@ -270,18 +272,32 @@ public class WebpayAdminClient extends WebpayAdminBase {
 		
 		if (details==null || details.size()==0) return;
 		
+		// Check if enrich from payment gateway is possible
+		boolean hasCardCredentials = 
+				cre.getCardMerchantId()!=null && 
+				cre.getCardMerchantId().trim().length()>0 &&
+				cre.getCardSecretWord()!=null &&
+				cre.getCardSecretWord().trim().length()>0;
+		
+		
 		List<String> invoicesToRetrieve = new ArrayList<String>();
-		List<PaymentReportDetail> paymentDetails = new ArrayList<PaymentReportDetail>();
+		List<PaymentReportDetail> paymentDetailsFromInvoice = new ArrayList<PaymentReportDetail>();
+		List<PaymentReportDetail> paymentDetailsFromTransaction = new ArrayList<PaymentReportDetail>();
 		
 		for (PaymentReportDetail d : details) {
-			if (d.getInvoiceId()!=null && d.getInvoiceId().trim().length()>0) {
-				if (enrichAll || (d.getEnrichFromInvoice()!=null && d.getEnrichFromInvoice())) {
+			if (enrichAll || (d.getEnrichFromInvoice()!=null && d.getEnrichFromInvoice())) {
+				
+				if (d.getInvoiceId()!=null && d.getInvoiceId().trim().length()>0) {
 					invoicesToRetrieve.add(d.getInvoiceId());
-					paymentDetails.add(d);
+					paymentDetailsFromInvoice.add(d);
+				} else if (hasCardCredentials && d.getPaymentId()!=null && d.getPaymentId().trim().length()>0) {
+					paymentDetailsFromTransaction.add(d);
 				}
 			}
+			
 		}
 		
+		// Enrich from Admin Service
 		if (invoicesToRetrieve.size()>0) {
 		
 			GetInvoicesRequest req = new GetInvoicesRequest();
@@ -316,7 +332,7 @@ public class WebpayAdminClient extends WebpayAdminBase {
 					invoiceMap.put(new Long(i.getInvoiceId()).toString(), i);
 				}
 				
-				for (PaymentReportDetail d : paymentDetails) {
+				for (PaymentReportDetail d : paymentDetailsFromInvoice) {
 					enrichWithInvoiceDetails(d, invoiceMap.get(d.getInvoiceId()), skipTaxId, skipEmail);
 				}
 				
@@ -324,8 +340,70 @@ public class WebpayAdminClient extends WebpayAdminBase {
 			
 		}
 		
+		if (paymentDetailsFromTransaction.size()>0) {
+			Transaction tr = null;
+			PaymentGwClient gwClient = new PaymentGwClient(Integer.parseInt(cre.getCardMerchantId()), cre.getCardSecretWord());
+			
+			for (PaymentReportDetail d : paymentDetailsFromTransaction) {
+				
+				tr = gwClient.queryByTransactionId(Long.parseLong(d.getPaymentId()));
+				if (tr==null) {
+					log.info("No transaction found for id: " + d.getPaymentId());
+				} else {
+					enrichFromPaymentGw(d, tr, skipTaxId, skipEmail);
+				}
+				
+			}
+		}
+		
+		
 	}
 
+	/**
+	 * Enriches a payment detail with information from payment gateway using PaymentId of the PaymentReportDetail.
+	 * 
+	 * @param dst			The detail to be enriched. 
+	 * @param tr			The transaction to enrich from
+	 * @param skipTaxId
+	 */
+	public void enrichFromPaymentGw(PaymentReportDetail dst, Transaction tr, boolean skipTaxId, boolean skipEmail) {
+		
+		if (tr==null) return;
+		
+		if (tr.getCustomer()!=null) {
+			Customer c = tr.getCustomer();
+			StringBuffer payerName = c.getFullName()!=null ? new StringBuffer(c.getFullName().toString()) : null;
+			if (c.getCompanyName()!=null && c.getCompanyName().trim().length()>0) {
+				if (payerName==null || payerName.length()==0) {
+					payerName = new StringBuffer(c.getCompanyName());
+				} else {
+					payerName.append(" : " + c.getCompanyName());
+				}
+			}
+			dst.setPayerName(payerName!=null ? payerName.toString() : null);
+			if (!skipTaxId) {
+				dst.setPayerOrgNo(c.getSsn());
+			}
+			if (!skipEmail && c.getEmail()!=null && c.getEmail().trim().length()>0) {
+				dst.addReference(PaymentReportDetail.REF_EMAIL, c.getEmail());
+			}
+			if (c.getId()!=null)
+				dst.setCustomerId(c.getId().toString());
+		}
+		
+		if (dst.getClientOrderNo()==null || dst.getClientOrderNo().trim().length()==0) {
+			dst.setClientOrderNo(tr.getCustomerRefNo());
+		}
+		
+		if (dst.getCheckoutOrderId()==null) {
+			Long coid = tr.getCheckoutOrderId();
+			if (coid!=null)
+				dst.setCheckoutOrderId(coid.toString());
+		}
+		
+	}
+	
+	
 	/**
 	 * Enriches a payment detail with information from a payment plan list item.
 	 * 

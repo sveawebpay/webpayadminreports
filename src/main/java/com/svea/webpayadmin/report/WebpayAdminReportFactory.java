@@ -176,6 +176,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 				for (PaymentReportGroup prg : directGroups) {
 					cardGroups.add(prg);
 				}
+				resultList.addAll(cardGroups);
 			}
 	
 			// Add rounding
