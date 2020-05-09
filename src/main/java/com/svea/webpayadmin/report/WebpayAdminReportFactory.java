@@ -220,12 +220,14 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 		
 		List<PaymentReportGroup> groups = nrFactory.createBankStatementLines(report, date, date);
 		
+		/*
+		 * No adjustment needed here. If we deduct we'll get faulty totals on the owning group.
 		if (groups!=null) {
 			for (PaymentReportGroup g : groups) {
 				gr.setTotalReceivedAmt(gr.getTotalReceivedAmt()-g.getTotalReceivedAmt());
 				gr.setTotalPaidAmt(gr.getTotalPaidAmt()-g.getTotalPaidAmt());
 			}
-		}
+		} */
 		
 	}
 	

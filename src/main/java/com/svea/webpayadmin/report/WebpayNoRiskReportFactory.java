@@ -203,7 +203,8 @@ public class WebpayNoRiskReportFactory extends ReportFactoryBase implements Paym
 			}
 			
 			// Calculate total vat amount from totalfees
-			gr.setTotalVatAmt(FeeDetail.getVatSum(gr.getTotalInvoiceFees()));
+			gr.setTotalVatAmt(FeeDetail.getVatSum(gr.getTotalInvoiceFees()) + FeeDetail.getVatSum(gr.getTotalOtherFees()));
+			gr.setTotalReceivedAmt(gr.calculateReceivedAmt());
 			
 			// Check totals if this is a stand-alone report
 			if (SveaCredential.ACCOUNTTYPE_ADMIN.equals(cre.getAccountType())) {
