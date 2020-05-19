@@ -278,6 +278,7 @@ public class ReportFactoryBase {
 			if (r.getRowId()==0  				// Free comments / adjustments 
 					|| r.getRowId()==125		// 125 = Annual Fee?
 					|| r.getRowId()==169		// 169 = Manual regression SEK
+					|| r.getRowId()==100		// 100 = Deposit account
 								) {  
 				d = null;
 				d = PaymentReportDetail.parseDeviation(
