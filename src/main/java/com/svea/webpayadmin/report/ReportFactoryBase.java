@@ -249,6 +249,7 @@ public class ReportFactoryBase {
 					r.getRowId()==41 ||		// Email invoice without specifications
 					r.getRowId()==53 ||		// Due date without specifications
 					r.getRowId()==99 ||		// Revenue interest
+					r.getRowId()==100 ||		// Deposit account
 					r.getRowId()==39		// Fee for admin invoices (fakturaservice)
 					) {				
 			
@@ -266,6 +267,9 @@ public class ReportFactoryBase {
 					ddf.setFeeType(FeeDetail.FEETYPE_REMINDER);
 				else if (r.getRowId()==20)
 					ddf.setFeeType(FeeDetail.FEETYPE_SUBSCRIPTION);
+				else if (r.getRowId()==100) {
+					ddf.setFeeType(FeeDetail.ACCTTYPE_DEPOSIT);
+				}
 				
 				ddf.calculateVat(VatType.getVatRate(cre.getCountryCode(), 
 													ddf.getFeeType(), 
@@ -278,7 +282,6 @@ public class ReportFactoryBase {
 			if (r.getRowId()==0  				// Free comments / adjustments 
 					|| r.getRowId()==125		// 125 = Annual Fee?
 					|| r.getRowId()==169		// 169 = Manual regression SEK
-					|| r.getRowId()==100		// 100 = Deposit account
 								) {  
 				d = null;
 				d = PaymentReportDetail.parseDeviation(
