@@ -57,6 +57,18 @@ public class WebpayAdminClientMain {
 	private String	orgNo;
 	private String	orgName;
 	
+	private String	specifiedAccountNr;
+	private String	specifiedType;
+	
+	public static String[] allowedTypes = new String[] {
+			SveaCredential.ACCOUNTTYPE_INVOICE,
+			SveaCredential.ACCOUNTTYPE_PAYMENTPLAN,
+			SveaCredential.ACCOUNTTYPE_CREDITCARD,
+			SveaCredential.ACCOUNTTYPE_LOAN,
+			SveaCredential.ACCOUNTTYPE_ADMIN,
+			SveaCredential.ACCOUNTTYPE_ACCOUNT_CREDIT
+	};
+	
 	/**
 	 * Loads configuration file containing credentials.
 	 * 
@@ -102,8 +114,10 @@ public class WebpayAdminClientMain {
 	 * 
 	 * @param	user	The identity user
 	 * @param	pass	The password of the identity user
+	 * @param 	enrich	If the enrich flag should be default
+	 * @param 	kickback	If kickback should be detailed by default
 	 */
-	private void createConfig(String user, String pass, boolean enrich, boolean kickback) throws Exception {
+	public void createConfig(String user, String pass, boolean enrich, boolean kickback) throws Exception {
 		
 		WebpayAdminClient client = new WebpayAdminClient();
 		ListOfSveaCredentials creds = client.getCredentialsByIdentity(user, pass); 
@@ -127,10 +141,16 @@ public class WebpayAdminClientMain {
 	 * The method tries to find the credential by first calling getCredentialsByIdentity
 	 * and use that credential to start with (to get country code for instance).
 	 * 
-	 * @return
-	 * @throws Exception 
+	 * @param 	accountNr	The accountNr to use.
+	 * @param	user	The identity user
+	 * @param	pass	The password of the identity user
+	 * @param 	enrich	If the enrich flag should be default
+	 * @param 	kickback	If kickback should be detailed by default
+	 * 
+	 * 
+	 * @throws Exception	If something goes wrong. 
 	 */
-	private void createConfig(String accountNr, String user, String pass, String type, boolean enrich, boolean kickback) throws Exception {
+	public void createConfig(String accountNr, String user, String pass, String type, boolean enrich, boolean kickback) throws Exception {
 		
 		WebpayAdminClient client = new WebpayAdminClient();		
 		ListOfSveaCredentials creds = client.getCredentialsByIdentity(user, pass);		
@@ -217,7 +237,10 @@ public class WebpayAdminClientMain {
 			}
 			
 			client = null;
-			if (cre.getAccountNo()!=null && cre.getAccountNo().trim().length()>0) {
+			if (cre.getAccountNo()!=null && cre.getAccountNo().trim().length()>0 
+					&& (specifiedAccountNr==null || cre.getAccountNo().equals(specifiedAccountNr))
+					&& (specifiedType==null || cre.getAccountType().equalsIgnoreCase(specifiedType))
+					) {
 			
 				if (SveaCredential.ACCOUNTTYPE_INVOICE.equals(cre.getAccountType()) || SveaCredential.ACCOUNTTYPE_PAYMENTPLAN.equals(cre.getAccountType())) {
 					client = new WebpayAdminReportFactory().init(cre);
@@ -388,6 +411,38 @@ public class WebpayAdminClientMain {
 		}
 		
 	}
+
+	/**
+	 * Prints allowed types to a stringbuffer
+	 * 
+	 * @return	A string buffer with allowed types
+	 */
+	private static StringBuffer printAllowedTypes() {
+		StringBuffer str = new StringBuffer();
+		str.append("  Possible types are:");
+		for (String s : allowedTypes) {
+			str.append("\n  " + s);
+		}
+		return str;
+	}
+
+	/**
+	 * Returns true if the type is allowed.
+	 * 
+	 * @param t		The type to compare
+	 * @return		If the type is an allowed type
+	 */
+	private static boolean isAllowedType(String t) {
+		
+		if (t==null || t.trim().length()==0) return false;
+		for (String s : allowedTypes) {
+			if (t.equalsIgnoreCase(s)) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
 	
 	/**
 	 * Main class for running the client
@@ -402,7 +457,7 @@ public class WebpayAdminClientMain {
 		options.addOption("u", "user", true, "User supplied by Svea Ekonomi to fetch reports. Can be specified in config-file.");
 		options.addOption("p", "pass", true, "Password supplied by Svea Ekonomi to fetch reports. Can be specified in config-file.");
 		options.addOption("a", "account", true, "Specify account when using user as argument. Not mandatory");
-		options.addOption("t", "type", true, "Specify type of account. Mandatory when account is used.");
+		options.addOption("t", "type", true, "Specify type of account.");
 		options.addOption("k", "kickback", false, "Read kickbacks on this account (as well as normal transactions)");
 		options.addOption("format", true, "Select other format than json. Available formats are 'xlsx', 'csv', 'flat-json' and 'bgmax'");
 		options.addOption("enrich", false, "Enrich data with as much information as possible.");
@@ -438,14 +493,6 @@ public class WebpayAdminClientMain {
 			if (cmd.hasOption("enrich")) {
 				enrich = true;
 			}
-			
-			if (cmd.hasOption("c")) {
-				main.loadConfig(cmd.getOptionValue("c"), enrich);
-			}
-			
-			if (cmd.hasOption("j")) {
-				main.loadJsonConfig(cmd.getOptionValue("j"), enrich);
-			}
 		
 			if (cmd.hasOption("u")) {
 				user = cmd.getOptionValue("u");
@@ -454,7 +501,6 @@ public class WebpayAdminClientMain {
 			if (cmd.hasOption("k")) {
 				kickback = true;
 			}
-			
 			
 			if (cmd.hasOption("noprune")) {
 				noprune = true;
@@ -468,25 +514,20 @@ public class WebpayAdminClientMain {
 			
 			if (cmd.hasOption("t")) 
 				type = cmd.getOptionValue("t");
+
+			List<String> missingOpts = new ArrayList<String>();
 			
 			if (!cmd.hasOption("c") && !cmd.hasOption("j")) {
-				
-				List<String> missingOpts = new ArrayList<String>();
 				
 				// Check that all other options are set
 				if (user==null)
 					missingOpts.add("If config file is not specified, user must be specified");
 				if (pass==null)
 					missingOpts.add("If config file is not specified, password must be specified");
-				if (accountNr!=null && type==null) {
+				if (accountNr!=null && type==null || (type!=null && !isAllowedType(type))) {
 					StringBuffer str = new StringBuffer();
 					str.append("If config file is not specified and account is specified, type must be specified.\n");
-					str.append("  Possible types are:\n");
-					str.append("  " + SveaCredential.ACCOUNTTYPE_INVOICE + "\n");
-					str.append("  " + SveaCredential.ACCOUNTTYPE_PAYMENTPLAN + "\n");
-					str.append("  " + SveaCredential.ACCOUNTTYPE_CREDITCARD + "\n");
-					str.append("  " + SveaCredential.ACCOUNTTYPE_LOAN + "\n");
-					str.append("  " + SveaCredential.ACCOUNTTYPE_ACCOUNT_CREDIT);
+					str.append(printAllowedTypes().toString());
 					missingOpts.add(str.toString());
 				}
 				
@@ -499,6 +540,27 @@ public class WebpayAdminClientMain {
 					else
 						main.createConfig(user, pass, enrich, kickback);
 				}
+			} else {
+				// We have a config file, we can still specify accountNr and/or type
+				if (type!=null) {
+					if (!isAllowedType(type)) {
+						missingOpts.add("Invalid type. Allowed types are " + printAllowedTypes().toString());
+					}
+					main.specifiedType = type;
+				}
+				
+				if (accountNr!=null) {
+					main.specifiedAccountNr = accountNr;
+				}
+				
+				if (cmd.hasOption("c")) {
+					main.loadConfig(cmd.getOptionValue("c"), enrich);
+				}
+				
+				if (cmd.hasOption("j")) {
+					main.loadJsonConfig(cmd.getOptionValue("j"), enrich);
+				}
+				
 			}
 			
 			if (cmd.hasOption("d")) {
@@ -549,7 +611,11 @@ public class WebpayAdminClientMain {
 			if (cmd.hasOption("savejsonconfigfile")) {
 				SveaCredential.saveCredentialsAsJson(main.credentials, cmd.getOptionValue("savejsonconfigfile"));
 			} else {
-				main.runQuery(format, noprune);
+				if (missingOpts.size()>0)
+					throw new MissingOptionException(missingOpts);
+				else {
+					main.runQuery(format, noprune);
+				}
 			}
 			
 		} catch (MissingOptionException me) {
