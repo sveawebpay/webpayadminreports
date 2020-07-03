@@ -126,9 +126,6 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 				// Fill others
 				fillFromInvoiceReport(gr, date);
 				
-				// Fill no risk payments
-				fillNoRiskPayments(report, gr, date);
-				
 			} else {
 				// ============= PAYMENT PLANS ==============
 				// Fill deviations
@@ -179,7 +176,23 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 				resultList.addAll(cardGroups);
 			}
 	
-			// Add rounding
+			// Check if admin payments are reconciled on this credential as well
+			List<PaymentReportGroup> adminGroups = null;
+			if (cre.isIncludeAdminPayments()) {
+				adminGroups = fillNoRiskPayments(report, gr, date);
+				resultList.addAll(adminGroups);
+				
+				// Add admin groups to card groups for rounding comparison
+				if (adminGroups!=null && adminGroups.size()>0) {
+					if (cardGroups==null) {
+						cardGroups = adminGroups;
+					} else {
+						cardGroups.addAll(adminGroups);
+					}
+				}
+			}
+			
+			// Add rounding and check the cardGroups
 			FeeDetail rounding = gr.calculateRoundingFee(gr.getTotalReceivedAmt(), cardGroups);
 			if (rounding!=null) {
 				double diffRounding = rounding.getFeeTotal() - gr.getEndingBalance();
@@ -209,26 +222,42 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 	/**
 	 * Fills no risk payments into supplied group
 	 * 
-	 * @param gr
-	 * @param date
-	 * @throws Exception 
+	 * @param parentGroup				The parent group.
+	 * @param date				The date
+	 * @throws Exception 		If something goes wrong.
 	 */
-	private void fillNoRiskPayments(PaymentReport report, PaymentReportGroup gr, Timestamp date) throws Exception {
+	private List<PaymentReportGroup> fillNoRiskPayments(PaymentReport report, PaymentReportGroup parentGroup, Timestamp date) throws Exception {
 		
 		WebpayNoRiskReportFactory nrFactory = new WebpayNoRiskReportFactory();
 		nrFactory.init(cre);
 		
 		List<PaymentReportGroup> groups = nrFactory.createBankStatementLines(report, date, date);
-		
-		/*
-		 * No adjustment needed here. If we deduct we'll get faulty totals on the owning group.
+
 		if (groups!=null) {
 			for (PaymentReportGroup g : groups) {
-				gr.setTotalReceivedAmt(gr.getTotalReceivedAmt()-g.getTotalReceivedAmt());
-				gr.setTotalPaidAmt(gr.getTotalPaidAmt()-g.getTotalPaidAmt());
+				g.setPaymentType(SveaCredential.ACCOUNTTYPE_ADMIN);
+				// Remove payment fees from the parent group
+				if (!cre.isIgnoreFees()) {
+					FeeDetail adminFees = new FeeDetail();
+					
+					// Set feetype to credit since that's what we want to remove from parent
+					adminFees.setFeeType(FeeDetail.FEETYPE_CREDIT);  
+					adminFees.setFee(FeeDetail.getFeeSum(g.getTotalInvoiceFees()) + FeeDetail.getFeeSum(g.getTotalOtherFees()));
+					adminFees.setFeeVat(FeeDetail.getVatSum(g.getTotalInvoiceFees()) + FeeDetail.getVatSum(g.getTotalOtherFees()));
+					adminFees.setFee(-adminFees.getFee());
+					adminFees.setFeeVat(-adminFees.getFeeVat());
+
+					List<FeeDetail> otherFees = new ArrayList<FeeDetail>();
+					otherFees.add(adminFees);
+					
+					parentGroup.combineTotalOtherFees(otherFees, new String[]{FeeDetail.FEETYPE_CREDIT}, true);
+					parentGroup.updateTotalFees();
+					
+				}
 			}
-		} */
+		}
 		
+		return groups;
 	}
 	
 	/**
