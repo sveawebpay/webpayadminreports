@@ -337,11 +337,12 @@ public class ReportFactoryBase {
 	 * Tries to figure out fees from the accounting suggestion and add VAT to the group.
 	 * NOTE! Be careful not to overlap these fees with the fees fetched from fillDeviations. The best is to 
 	 * try and resolve the fee / amounts using fillDeviations.
+	 * If a check is commented out, it has been moved to fillDeviations.
 	 * 
-	 * @param gr
-	 * @param date
-	 * @return
-	 * @throws Exception
+	 * @param gr				The group to work on.
+	 * @param date				The date this group belongs to.
+	 * @return					A list of fees (if applicable).
+	 * @throws Exception		If something goes wrong,
 	 */
 	public List<FeeDetail> getOtherFeesFromAccountingSuggestion(PaymentReportGroup gr, Timestamp date) throws Exception {
 		
@@ -379,11 +380,11 @@ public class ReportFactoryBase {
 			// }
 			
 			// Check for deposit to "depositionskonto"
-			if (f.getAccountNr().equals(cre.getAccountMap().get(FeeDetail.ACCTTYPE_DEPOSIT))) {
-				f.setFeeType(FeeDetail.ACCTTYPE_DEPOSIT);
-				otherFees.add(f);
-				continue;
-			}
+			// if (f.getAccountNr().equals(cre.getAccountMap().get(FeeDetail.ACCTTYPE_DEPOSIT))) {
+			//	f.setFeeType(FeeDetail.ACCTTYPE_DEPOSIT);
+			//	otherFees.add(f);
+			//	continue;
+			// }
 
 			// Check for DEVIATIONS
 			// if (f.getAccountNr().equals(cre.getAccountMap().get(FeeDetail.ACCTTYPE_DEVIATIONS))) {
