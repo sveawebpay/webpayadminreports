@@ -434,11 +434,13 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 				
 				d.setCustomerId(Long.toString(rr.getCustomerId()));
 				d.setInvoiceId(Long.toString(rr.getInvoiceId()));
-				d.setOrderId(rr.getClientOrderNumber());
 				d.setPayerName(rr.getName());
 				d.setPaidAmt(-rr.getTransactionAmount().doubleValue());
 				if (rr.getCheckoutOrderId()!=null && rr.getCheckoutOrderId()>0)
 					d.setCheckoutOrderId(rr.getCheckoutOrderId().toString());
+				if (rr.getClientOrderNumber()!=null && rr.getClientOrderNumber().trim().length()>0) {
+					d.setClientOrderNo(rr.getClientOrderNumber());
+				}
 				if (rr.getSveaOrderId()!=null && rr.getSveaOrderId()>0) {
 					d.setOrderId(Long.toString(rr.getSveaOrderId()));
 				}
