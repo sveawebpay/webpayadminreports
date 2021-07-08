@@ -49,7 +49,7 @@ public class TestAdminClient extends WebpayAdminClientTest {
 			fail("No clients in configuration");
 
 		System.out.println(
-				JsonUtil.gson.toJson(credentials)
+				JsonUtil.buildGson().toJson(credentials)
 				);
 		
 	}

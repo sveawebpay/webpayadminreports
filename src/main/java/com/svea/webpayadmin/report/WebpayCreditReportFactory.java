@@ -208,7 +208,7 @@ public class WebpayCreditReportFactory extends ReportFactoryBase implements Paym
 			if (invoice.getCheckoutOrderId()!=null)
 				d.setCheckoutOrderId(invoice.getCheckoutOrderId().toString());
 			if (invoice.getSveaOrderCreationDate()!=null) {
-				d.setOrderDate(JsonUtil.dfmt.format(invoice.getSveaOrderCreationDate().toGregorianCalendar().getTime()));
+				d.setOrderDate(JsonUtil.getDateFormat().format(invoice.getSveaOrderCreationDate().toGregorianCalendar().getTime()));
 			}
 			if (invoice.getSveaOrderId()!=null)
 			d.setOrderId(invoice.getSveaOrderId().toString());
@@ -235,7 +235,7 @@ public class WebpayCreditReportFactory extends ReportFactoryBase implements Paym
 			if (invoice.getCheckoutOrderId()!=null)
 				d.setCheckoutOrderId(invoice.getCheckoutOrderId().toString());
 			if (invoice.getSveaOrderCreationDate()!=null) {
-				d.setOrderDate(JsonUtil.dfmt.format(invoice.getSveaOrderCreationDate().toGregorianCalendar().getTime()));
+				d.setOrderDate(JsonUtil.getDateFormat().format(invoice.getSveaOrderCreationDate().toGregorianCalendar().getTime()));
 			}
 			if (invoice.getSveaOrderId()!=null)
 			d.setOrderId(invoice.getSveaOrderId().toString());
@@ -244,7 +244,7 @@ public class WebpayCreditReportFactory extends ReportFactoryBase implements Paym
 			// Check for fees
 			if (feeAmt!=0) {
 				fee = new FeeDetail();
-				if (gr.getReconciliationDateAsDate().after(JsonUtil.dfmt.parse("2019-02-15")))
+				if (gr.getReconciliationDateAsDate().after(JsonUtil.getDateFormat().parse("2019-02-15")))
 					fee.setFeeType(FeeDetail.FEETYPE_ADM);
 				else
 					fee.setFeeType(FeeDetail.FEETYPE_CREDIT);

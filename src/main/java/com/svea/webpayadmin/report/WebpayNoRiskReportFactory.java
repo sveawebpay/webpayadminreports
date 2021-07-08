@@ -150,7 +150,7 @@ public class WebpayNoRiskReportFactory extends ReportFactoryBase implements Paym
 				d.setInvoiceId(invoice.getInvoiceId()!=null ? invoice.getInvoiceId().toString() : null);
 				d.setOrderId(invoice.getSveaOrderId()!=null ? invoice.getSveaOrderId().toString() : null);
 				if (invoice.getSveaOrderCreationDate()!=null) {
-					d.setOrderDate(JsonUtil.dfmt.format(invoice.getSveaOrderCreationDate().toGregorianCalendar().getTime()));
+					d.setOrderDate(JsonUtil.getDateFormat().format(invoice.getSveaOrderCreationDate().toGregorianCalendar().getTime()));
 				}
 				d.setPaidAmt(invoice.getAmount().doubleValue());
 				// Enrich from invoice since clientOrderId is missing.

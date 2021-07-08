@@ -393,7 +393,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 			}
 			if (invoice.getSveaOrderCreationDate()!=null) {
 				XMLGregorianCalendar odate = invoice.getSveaOrderCreationDate();
-				d.setOrderDate(JsonUtil.dfmt.format(odate.toGregorianCalendar().getTime()));
+				d.setOrderDate(JsonUtil.getDateFormat().format(odate.toGregorianCalendar().getTime()));
 			}
 
 			// Check for fees
@@ -446,7 +446,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 				}
 				if (rr.getSveaOrderCreationDate()!=null) {
 					XMLGregorianCalendar odate = rr.getSveaOrderCreationDate();
-					d.setOrderDate(JsonUtil.dfmt.format(odate.toGregorianCalendar().getTime()));
+					d.setOrderDate(JsonUtil.getDateFormat().format(odate.toGregorianCalendar().getTime()));
 				}
 				
 				totalRegressions += rr.getTransactionAmount().doubleValue();
@@ -557,7 +557,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 			}
 			if (invoice.getSveaOrderCreationDate()!=null) {
 				XMLGregorianCalendar odate = invoice.getSveaOrderCreationDate();
-				d.setOrderDate(JsonUtil.dfmt.format(odate.toGregorianCalendar().getTime()));
+				d.setOrderDate(JsonUtil.getDateFormat().format(odate.toGregorianCalendar().getTime()));
 			}
 
 			// Check for fees
@@ -599,7 +599,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 				}
 				if (rr.getSveaOrderCreationDate()!=null) {
 					XMLGregorianCalendar odate = rr.getSveaOrderCreationDate();
-					d.setOrderDate(JsonUtil.dfmt.format(odate.toGregorianCalendar().getTime()));
+					d.setOrderDate(JsonUtil.getDateFormat().format(odate.toGregorianCalendar().getTime()));
 				}
 				
 				// Check for fees

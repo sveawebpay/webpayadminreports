@@ -96,7 +96,7 @@ public class WebpayAdminClientMain {
 	 */
 	private void loadJsonConfig(String configFile, boolean enrichAll) throws Exception {
 		
-		ListOfSveaCredentials creds = JsonUtil.gson.fromJson(new FileReader(configFile), ListOfSveaCredentials.class);
+		ListOfSveaCredentials creds = JsonUtil.buildGson().fromJson(new FileReader(configFile), ListOfSveaCredentials.class);
 		
 		if (creds!=null && creds.getCredentials()!=null && !creds.getCredentials().isEmpty()) {
 			credentials = creds.getCredentials();
@@ -348,7 +348,7 @@ public class WebpayAdminClientMain {
 				filePrefix = "ReconciliationReport";
 			}
 			
-			of = new File(filePrefix + "-"+ JsonUtil.dfmt.format(fromDate) + (fromDate.equals(untilDate) ? "" : "-" + JsonUtil.dfmt.format(untilDate)));
+			of = new File(filePrefix + "-"+ JsonUtil.getDateFormat().format(fromDate) + (fromDate.equals(untilDate) ? "" : "-" + JsonUtil.getDateFormat().format(untilDate)));
 		}
 		
 		if (od!=null && of!=null) {
@@ -564,7 +564,7 @@ public class WebpayAdminClientMain {
 			}
 			
 			if (cmd.hasOption("d")) {
-				main.fromDate = JsonUtil.dfmt.parse(cmd.getOptionValue("d")); 
+				main.fromDate = JsonUtil.getDateFormat().parse(cmd.getOptionValue("d")); 
 			}
 
 			if (cmd.hasOption("format")) {
@@ -590,7 +590,7 @@ public class WebpayAdminClientMain {
 			}
 			
 			if (cmd.hasOption("untildate")) {
-				main.untilDate = JsonUtil.dfmt.parse(cmd.getOptionValue("untildate"));
+				main.untilDate = JsonUtil.getDateFormat().parse(cmd.getOptionValue("untildate"));
 			}
 			if (main.fromDate==null) {
 				Calendar cal = Calendar.getInstance();
