@@ -39,12 +39,12 @@ The above will create a single jar which contains all necessary code to run this
 You'll find the jar in the target directory, it will be named something like below
 
 ```
-webpayadmin-reports-0.0.3-SNAPSHOT-jar-with-dependencies.jar
+webpayadmin-reports-0.0.4-jar-with-dependencies.jar
 ```
 
 Run with
 
-	java -jar target/webpayadmin-reports-0.0.3-SNAPSHOT-jar-with-dependencies.jar
+	java -jar target/webpayadmin-reports-0.0.4-jar-with-dependencies.jar
 
 If you end up with "Invalid target release", when compiling, see http://roufid.com/invalid-target-release-in-maven-build/
 

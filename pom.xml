@@ -2,21 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.svea</groupId>
   <artifactId>webpayadmin-reports</artifactId>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>0.0.4</version>
   <name>WebPayAdmin Reports</name>
   <description>Application / library that compiles reconciliation reports for WebPay.</description>
   
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<webpay-common.version>0.0.4-SNAPSHOT</webpay-common.version>
+		<webpay-common.version>0.0.4</webpay-common.version>
 	</properties>
-	
-  	<distributionManagement>
-		<snapshotRepository>
-			<id>wp-ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<build>
 
