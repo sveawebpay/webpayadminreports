@@ -22,9 +22,9 @@ import com.svea.webpayadminservice.client.AccountingReportRow;
 import com.svea.webpayadminservice.client.FinancialReportHeader;
 import com.svea.webpayadminservice.client.FinancialReportRow;
 import com.svea.webpayadminservice.client.GetAccountingReportRequest;
-import com.svea.webpayadminservice.client.GetAccountingReportResponse2;
+import com.svea.webpayadminservice.client.GetAccountingReportResponse;
 import com.svea.webpayadminservice.client.GetFinancialReportRequest;
-import com.svea.webpayadminservice.client.GetFinancialReportResponse2;
+import com.svea.webpayadminservice.client.GetFinancialReportResponse;
 
 public class ReportFactoryBase {
 
@@ -63,7 +63,7 @@ public class ReportFactoryBase {
 
 		request.setFromDate(acctDate);
 		request.setToDate(acctDate);
-		GetAccountingReportResponse2 response = svea.getServicePort()
+		GetAccountingReportResponse response = svea.getServicePort()
 				.getAccountingReport(request);
 
 		if (response==null)
@@ -99,7 +99,7 @@ public class ReportFactoryBase {
 	 * @return
 	 * @throws DatatypeConfigurationException
 	 */
-	public GetFinancialReportResponse2 getFinancialReport(java.sql.Timestamp date)
+	public GetFinancialReportResponse getFinancialReport(java.sql.Timestamp date)
 			throws DatatypeConfigurationException {
 
 		GetFinancialReportRequest request = new GetFinancialReportRequest();
@@ -109,7 +109,7 @@ public class ReportFactoryBase {
 
 		request.setFromDate(acctDate);
 		request.setToDate(acctDate);
-		GetFinancialReportResponse2 response = svea.getServicePort()
+		GetFinancialReportResponse response = svea.getServicePort()
 				.getFinancialReport(request);
 
 		// Set country code
@@ -150,7 +150,7 @@ public class ReportFactoryBase {
 		} else {
 
 			// Payment plan
-			GetFinancialReportResponse2 fr = getFinancialReport(date);
+			GetFinancialReportResponse fr = getFinancialReport(date);
 			List<FinancialReportRow> rows = fr.getReportRows()!=null ? fr.getReportRows().getFinancialReportRow() : null;
 
 			if (rows == null) {
@@ -193,7 +193,7 @@ public class ReportFactoryBase {
 	 */
 	protected void fillDeviations(PaymentReportGroup gr, java.sql.Timestamp date) throws Exception {
 		
-		GetFinancialReportResponse2 frr = getFinancialReport(date);
+		GetFinancialReportResponse frr = getFinancialReport(date);
 		FinancialReportHeader fh = frr.getReportHeader();
 		List<FinancialReportRow> result = frr.getReportRows()!=null ? frr.getReportRows().getFinancialReportRow() : null;
 		

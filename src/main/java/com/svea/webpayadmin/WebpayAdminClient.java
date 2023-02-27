@@ -32,7 +32,7 @@ import com.svea.webpayadminservice.client.GetClientsByIdentityAccountRequest;
 import com.svea.webpayadminservice.client.GetClientsByIdentityAccountResponse2;
 import com.svea.webpayadminservice.client.GetInvoiceInformation;
 import com.svea.webpayadminservice.client.GetInvoicesRequest;
-import com.svea.webpayadminservice.client.GetInvoicesResponse2;
+import com.svea.webpayadminservice.client.GetInvoicesResponse;
 import com.svea.webpayadminservice.client.Invoice;
 import com.svea.webpayadminservice.client.InvoiceDistributionType;
 import com.svea.webpayadminservice.client.OrderType;
@@ -41,10 +41,10 @@ import com.svea.webpayadminservice.client.PaymentPlanStatus;
 import com.svea.webpayadminservice.client.SearchPaymentPlanFilter;
 import com.svea.webpayadminservice.client.SearchPaymentPlanSorting;
 import com.svea.webpayadminservice.client.SearchPaymentPlansRequest;
-import com.svea.webpayadminservice.client.SearchPaymentPlansResponse2;
+import com.svea.webpayadminservice.client.SearchPaymentPlansResponse;
 import com.svea.webpayadminservice.client.SortDirection;
 import com.svea.webpayadminservice.client.SortPaymentPlanProperty;
-import com.svea.webpayadminservice.client.TextMatchType;
+import com.svea.webpayadminservice.client.TextMatchType3;
 
 /**
  * Class for easier access to the client functions.
@@ -230,10 +230,10 @@ public class WebpayAdminClient extends WebpayAdminBase {
 		pps.add(PaymentPlanStatus.WAITING_FOR_CONTRACT);
 		pps.add(PaymentPlanStatus.WAITING_TO_BE_SENT);
 		
-		filter.setTextMatchType(TextMatchType.CONTRACT_NUMBER);
+		filter.setTextMatchType(TextMatchType3.CONTRACT_NUMBER);
 		req.setSearchPaymentPlanFilter(filter);
 		
-		SearchPaymentPlansResponse2 response;
+		SearchPaymentPlansResponse response;
 		
 		for (PaymentReportDetail d : details) {
 			
@@ -315,7 +315,7 @@ public class WebpayAdminClient extends WebpayAdminBase {
 				il.add(ii);
 			}
 			
-			GetInvoicesResponse2 res = adminServicePort.getInvoices(req);
+			GetInvoicesResponse res = adminServicePort.getInvoices(req);
 			
 			if (res.getResultCode()!=0 && res.getResultCode()!=24001) {		// Don't throw error on invoice not found
 				throw new Exception(res.getResultCode() + " : " + res.getErrorMessage());

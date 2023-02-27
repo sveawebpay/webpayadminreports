@@ -20,11 +20,11 @@ import com.svea.webpayadminservice.client.ArrayOfInvoiceReportRow;
 import com.svea.webpayadminservice.client.ArrayOfPaymentPlanReportRow;
 import com.svea.webpayadminservice.client.ArrayOfRegressionReportRow;
 import com.svea.webpayadminservice.client.GetInvoiceReportRequest;
-import com.svea.webpayadminservice.client.GetInvoiceReportResponse2;
+import com.svea.webpayadminservice.client.GetInvoiceReportResponse;
 import com.svea.webpayadminservice.client.GetPaymentPlanReportRequest;
-import com.svea.webpayadminservice.client.GetPaymentPlanReportResponse2;
+import com.svea.webpayadminservice.client.GetPaymentPlanReportResponse;
 import com.svea.webpayadminservice.client.GetRegressionReportRequest;
-import com.svea.webpayadminservice.client.GetRegressionReportResponse2;
+import com.svea.webpayadminservice.client.GetRegressionReportResponse;
 import com.svea.webpayadminservice.client.InvoiceReportRow;
 import com.svea.webpayadminservice.client.PaymentPlanReportRow;
 import com.svea.webpayadminservice.client.RegressionReportRow;
@@ -697,7 +697,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 		request.setFromDate(xdate);
 		request.setToDate(xdate);
 
-		GetRegressionReportResponse2 response = svea.getServicePort()
+		GetRegressionReportResponse response = svea.getServicePort()
 				.getRegressionReport(request);
 
 		ArrayOfRegressionReportRow res = response.getReportRows();
@@ -724,7 +724,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 		request.setFromDate(xdate);
 		request.setToDate(xdate);
 		
-		GetInvoiceReportResponse2 response = null;
+		GetInvoiceReportResponse response = null;
 		try {
 			response = svea.getServicePort()
 				.getInvoiceReport(request);
@@ -757,7 +757,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 		request.setFromDate(xdate);
 		request.setToDate(xdate);
 
-		GetPaymentPlanReportResponse2 response = svea.getServicePort()
+		GetPaymentPlanReportResponse response = svea.getServicePort()
 				.getPaymentPlanReport(request);
 
 		ArrayOfPaymentPlanReportRow res = response.getReportRows();
