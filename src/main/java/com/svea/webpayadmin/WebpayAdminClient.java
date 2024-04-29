@@ -16,20 +16,15 @@ import com.svea.webpay.common.reconciliation.PaymentReportGroup;
 import com.svea.webpay.paymentgw.PaymentGwClient;
 import com.svea.webpay.paymentgw.entity.Customer;
 import com.svea.webpay.paymentgw.entity.Transaction;
-import com.svea.webpayadminservice.client.ArrayOfClientData;
 import com.svea.webpayadminservice.client.ArrayOfDeliverOrderInformation;
 import com.svea.webpayadminservice.client.ArrayOfGetInvoiceInformation;
 import com.svea.webpayadminservice.client.ArrayOfInvoice;
 import com.svea.webpayadminservice.client.ArrayOfPaymentPlanStatus;
 import com.svea.webpayadminservice.client.ArrayOflong;
-import com.svea.webpayadminservice.client.Authentication;
-import com.svea.webpayadminservice.client.ClientData;
 import com.svea.webpayadminservice.client.CustomerIdentity;
 import com.svea.webpayadminservice.client.DeliverOrderInformation;
 import com.svea.webpayadminservice.client.DeliveryRequest;
 import com.svea.webpayadminservice.client.DeliveryResponse;
-import com.svea.webpayadminservice.client.GetClientsByIdentityAccountRequest;
-import com.svea.webpayadminservice.client.GetClientsByIdentityAccountResponse2;
 import com.svea.webpayadminservice.client.GetInvoiceInformation;
 import com.svea.webpayadminservice.client.GetInvoicesRequest;
 import com.svea.webpayadminservice.client.GetInvoicesResponse;
@@ -90,82 +85,14 @@ public class WebpayAdminClient extends WebpayAdminBase {
 	 * - Username
 	 * - Password
 	 * 
+	 * @deprecated	No longer working since April 2024.
 	 * @throws Exception
 	 */
 	public ListOfSveaCredentials getCredentialsByIdentity(String username, String password) throws Exception {
 		
-		GetClientsByIdentityAccountRequest req = new GetClientsByIdentityAccountRequest();
-		Authentication auth = new Authentication();
-		auth.setUsername(username);
-		auth.setPassword(password);
-		req.setAuthentication(auth);
-		
-		GetClientsByIdentityAccountResponse2 response = adminServicePort.getClientsByIdentityAccount(req);
-		
-		if (response.getErrorMessage()!=null && response.getErrorMessage().trim().length()>0) {
-			throw new Exception(response.getErrorMessage());
-		}
-		
-		SveaCredential sc = null;
 		ListOfSveaCredentials result = new ListOfSveaCredentials();
-		List<SveaCredential> lsc = result.getCredentials();
-		
-		if (response.getClients()!=null) {
-			ArrayOfClientData alist = response.getClients();
-			List<ClientData> list = alist.getClientData();
-			Map<String,SveaCredential> invoiceCreds = new TreeMap<String,SveaCredential>();
-			
-			for (ClientData cd : list) {
-				sc = convert(cd);
-				sc.setUsername(username);
-				sc.setPassword(password);
-				sc.createDefaultAccountMap();
-				if (SveaCredential.ACCOUNTTYPE_INVOICE.equalsIgnoreCase(sc.getAccountType())) {
-					// Set include card payments on all invoice accounts since
-					// there's no general rule where the cards are reported.
-					sc.setIncludeCardPayments(true);
-					
-					// invoiceCreds.put(sc.getAccountNo(), sc);
-				}
-				lsc.add(sc);
-			}
-			
-			// Check for invoice accounts and set the lowest clientID to include card payments
-			/*SveaCredential lowestInvoiceCred;
-			if (!invoiceCreds.isEmpty()) {
-				lowestInvoiceCred = invoiceCreds.get(invoiceCreds.keySet().iterator().next()); 
-				lowestInvoiceCred.setIncludeCardPayments(true);
-			}*/
-			
-		}
 		
 		return result;
-	}
-	
-	/**
-	 * Converts a ClientData to SveaCredential
-	 * 
-	 * @param cd		ClientData
-	 * @return	A SveaCredential containing
-	 * - AccountNo (clientId)
-	 * - CountryCode
-	 * - Currency
-	 * - AccountType ( a number? )
-	 */
-	private SveaCredential convert(ClientData cd) {
-		
-		SveaCredential sc = new SveaCredential();
-		
-		sc.setAccountNo(cd.getClientId().toString());
-		sc.setCountryCode(cd.getCountry());
-		sc.setCurrency(cd.getCurrency());
-		
-		// Do mapping between agreement type and accounttype
-		// Null if no mapping is found
-		sc.setAccountType(SveaCredential.AGREEMENT_TYPE_MAP.get(cd.getAgreementType()));
-		
-		return sc;
-		
 	}
 	
 	/**
