@@ -85,7 +85,7 @@ public class WebpayAdminClient extends WebpayAdminBase {
 	 * - Username
 	 * - Password
 	 * 
-	 * @deprecated	No longer working since April 2024.
+	 * @deprecated	No longer working since April 2024. Returns an empty list.
 	 * @throws Exception
 	 */
 	public ListOfSveaCredentials getCredentialsByIdentity(String username, String password) throws Exception {
