@@ -3,8 +3,8 @@ package com.svea.webpayadmin;
 import java.net.URL;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-import javax.xml.ws.BindingProvider;
+
+import jakarta.xml.ws.BindingProvider;
 
 import com.svea.webpay.common.auth.SveaCredential;
 import com.svea.webpayadminservice.client.AdminService;
@@ -16,7 +16,6 @@ public class WebpayAdminBase {
 	protected boolean isTest = false;
 	protected boolean isPaymentPlan = false;
 	
-	protected static final QName ADMIN_SERVICE_NAME = new QName("http://tempuri.org/", "AdminService");
 	protected static final String testWSAdminAddress = "https://webpayadminservicestage.svea.com/AdminService.svc";
 
 	protected URL wsdlAdminURL = AdminService.WSDL_LOCATION;
@@ -46,7 +45,7 @@ public class WebpayAdminBase {
 			System.setProperty("java.util.logging.config.file", url.getFile());
 		}
 		
-		adminService = new AdminService(wsdlAdminURL, ADMIN_SERVICE_NAME);
+		adminService = new AdminService(wsdlAdminURL);
 		adminServicePort = adminService.getAdminSoapService();
 		
 	}

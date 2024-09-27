@@ -28,6 +28,7 @@ import com.svea.webpayadminservice.client.DeliveryResponse;
 import com.svea.webpayadminservice.client.GetInvoiceInformation;
 import com.svea.webpayadminservice.client.GetInvoicesRequest;
 import com.svea.webpayadminservice.client.GetInvoicesResponse;
+import com.svea.webpayadminservice.client.GetInvoicesResponse2;
 import com.svea.webpayadminservice.client.Invoice;
 import com.svea.webpayadminservice.client.InvoiceDistributionType;
 import com.svea.webpayadminservice.client.OrderType;
@@ -37,6 +38,7 @@ import com.svea.webpayadminservice.client.SearchPaymentPlanFilter;
 import com.svea.webpayadminservice.client.SearchPaymentPlanSorting;
 import com.svea.webpayadminservice.client.SearchPaymentPlansRequest;
 import com.svea.webpayadminservice.client.SearchPaymentPlansResponse;
+import com.svea.webpayadminservice.client.SearchPaymentPlansResponse2;
 import com.svea.webpayadminservice.client.SortDirection;
 import com.svea.webpayadminservice.client.SortPaymentPlanProperty;
 import com.svea.webpayadminservice.client.TextMatchType3;
@@ -160,7 +162,7 @@ public class WebpayAdminClient extends WebpayAdminBase {
 		filter.setTextMatchType(TextMatchType3.CONTRACT_NUMBER);
 		req.setSearchPaymentPlanFilter(filter);
 		
-		SearchPaymentPlansResponse response;
+		SearchPaymentPlansResponse2 response;
 		
 		for (PaymentReportDetail d : details) {
 			
@@ -242,7 +244,7 @@ public class WebpayAdminClient extends WebpayAdminBase {
 				il.add(ii);
 			}
 			
-			GetInvoicesResponse res = adminServicePort.getInvoices(req);
+			GetInvoicesResponse2 res = adminServicePort.getInvoices(req);
 			
 			if (res.getResultCode()!=0 && res.getResultCode()!=24001) {		// Don't throw error on invoice not found
 				throw new Exception(res.getResultCode() + " : " + res.getErrorMessage());
