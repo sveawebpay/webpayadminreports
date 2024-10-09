@@ -162,7 +162,7 @@ public class WebpayAdminClient extends WebpayAdminBase {
 		filter.setTextMatchType(TextMatchType3.CONTRACT_NUMBER);
 		req.setSearchPaymentPlanFilter(filter);
 		
-		SearchPaymentPlansResponse2 response;
+		SearchPaymentPlansResponse response;
 		
 		for (PaymentReportDetail d : details) {
 			
@@ -244,7 +244,7 @@ public class WebpayAdminClient extends WebpayAdminBase {
 				il.add(ii);
 			}
 			
-			GetInvoicesResponse2 res = adminServicePort.getInvoices(req);
+			GetInvoicesResponse res = adminServicePort.getInvoices(req);
 			
 			if (res.getResultCode()!=0 && res.getResultCode()!=24001) {		// Don't throw error on invoice not found
 				throw new Exception(res.getResultCode() + " : " + res.getErrorMessage());

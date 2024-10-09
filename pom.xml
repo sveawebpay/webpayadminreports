@@ -8,7 +8,7 @@
   
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<webpay-common.version>0.0.9-SNAPSHOT</webpay-common.version>
+		<webpay-common.version>0.0.8</webpay-common.version>
 	</properties>
 
 

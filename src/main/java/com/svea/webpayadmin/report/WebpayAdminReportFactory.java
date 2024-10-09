@@ -700,7 +700,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 		request.setFromDate(xdate);
 		request.setToDate(xdate);
 
-		GetRegressionReportResponse2 response = svea.getServicePort()
+		GetRegressionReportResponse response = svea.getServicePort()
 				.getRegressionReport(request);
 
 		ArrayOfRegressionReportRow res = response.getReportRows();
@@ -727,7 +727,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 		request.setFromDate(xdate);
 		request.setToDate(xdate);
 		
-		GetInvoiceReportResponse2 response = null;
+		GetInvoiceReportResponse response = null;
 		try {
 			response = svea.getServicePort()
 				.getInvoiceReport(request);
@@ -760,7 +760,7 @@ public class WebpayAdminReportFactory extends ReportFactoryBase implements Payme
 		request.setFromDate(xdate);
 		request.setToDate(xdate);
 
-		GetPaymentPlanReportResponse2 response = svea.getServicePort()
+		GetPaymentPlanReportResponse response = svea.getServicePort()
 				.getPaymentPlanReport(request);
 
 		ArrayOfPaymentPlanReportRow res = response.getReportRows();
