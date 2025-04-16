@@ -23,10 +23,8 @@ import com.svea.webpayadminservice.client.FinancialReportHeader;
 import com.svea.webpayadminservice.client.FinancialReportRow;
 import com.svea.webpayadminservice.client.GetAccountingReportRequest;
 import com.svea.webpayadminservice.client.GetAccountingReportResponse;
-import com.svea.webpayadminservice.client.GetAccountingReportResponse2;
 import com.svea.webpayadminservice.client.GetFinancialReportRequest;
 import com.svea.webpayadminservice.client.GetFinancialReportResponse;
-import com.svea.webpayadminservice.client.GetFinancialReportResponse2;
 
 public class ReportFactoryBase {
 

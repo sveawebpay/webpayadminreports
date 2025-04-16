@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.Map;
 
 
-import jakarta.xml.ws.BindingProvider;
+import javax.xml.ws.BindingProvider;
 
 import com.svea.webpay.common.auth.SveaCredential;
 import com.svea.webpayadminservice.client.AdminService;
@@ -35,7 +35,7 @@ public class WebpayAdminBase {
 		existingSpi = System.getProperty("javax.xml.ws.spi.Provider");
 		existingSoapFactory = System.getProperty("javax.xml.soap.SOAPFactory");
 
-//		System.setProperty("javax.xml.ws.spi.Provider","com.sun.xml.internal.ws.spi.ProviderImpl");
+		System.setProperty("javax.xml.ws.spi.Provider","org.apache.cxf.jaxws.spi.ProviderImpl");
 //		System.setProperty("javax.xml.soap.SOAPFactory", "com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl");
 		
 		// Read logging properties to remove warnings from 
