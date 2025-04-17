@@ -35,7 +35,7 @@ public class WebpayAdminBase {
 		existingSpi = System.getProperty("javax.xml.ws.spi.Provider");
 		existingSoapFactory = System.getProperty("javax.xml.soap.SOAPFactory");
 
-		System.setProperty("javax.xml.ws.spi.Provider","org.apache.cxf.jaxws.spi.ProviderImpl");
+//		System.setProperty("javax.xml.ws.spi.Provider","org.apache.cxf.jaxws.spi.ProviderImpl");
 //		System.setProperty("javax.xml.soap.SOAPFactory", "com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl");
 		
 		// Read logging properties to remove warnings from 
@@ -45,8 +45,18 @@ public class WebpayAdminBase {
 			System.setProperty("java.util.logging.config.file", url.getFile());
 		}
 		
-		adminService = new AdminService(wsdlAdminURL);
-		adminServicePort = adminService.getAdminSoapService();
+	      // Set TCCL explicitly to current bundle’s classloader
+        ClassLoader original = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+
+    		adminService = new AdminService(wsdlAdminURL);
+    		adminServicePort = adminService.getAdminSoapService();
+
+        } finally {
+            Thread.currentThread().setContextClassLoader(original);
+        }		
+		
 		
 	}
 
