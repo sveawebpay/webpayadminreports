@@ -9,7 +9,7 @@
   
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<webpay-common.version>0.0.10-SNAPSHOT</webpay-common.version>
+		<webpay-common.version>0.0.10</webpay-common.version>
 	</properties>
 
 	<dependencies>
